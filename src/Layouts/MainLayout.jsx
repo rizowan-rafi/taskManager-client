@@ -4,14 +4,14 @@ import { Outlet } from 'react-router-dom'
 
 const MainLayout = props => {
   return (
-      <div>
+      <div className="">
           <nav></nav>
-          <main>
+          <main className="flex justify-center items-center">
               <Outlet></Outlet>
           </main>
           <footer></footer>
-    </div>
-  )
+      </div>
+  );
 }
 
 MainLayout.propTypes = {}

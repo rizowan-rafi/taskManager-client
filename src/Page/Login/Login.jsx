@@ -26,13 +26,13 @@ const Login = (props) => {
     return (
         <div
             style={{
-                backgroundImage: `url(${background})`, // ✅ Correct way to set backgroundImage
+                backgroundImage: `url(${background})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
-            className={`w-full flex justify-center items-center h-screen`}
+            className={`w-full flex justify-center items-center min-h-screen`}
         >
-            <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-background bg-clip-padding backdrop-filter backdrop-blur bg-opacity-50 backdrop-saturate-100 backdrop-contrast-100">
+            <div className="w-[80%] lg:max-w-md my-5 mx-auto p-4 lg:p-8 space-y-3 rounded-xl bg-background bg-clip-padding backdrop-filter backdrop-blur bg-opacity-50 backdrop-saturate-100 backdrop-contrast-100">
                 <h1 className="text-4xl font-bold text-center text-primary">
                     Login
                 </h1>

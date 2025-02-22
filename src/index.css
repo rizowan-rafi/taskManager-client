@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body {
+    touch-action: none;
+}
+button{
+    pointer-events: auto !important;
+}

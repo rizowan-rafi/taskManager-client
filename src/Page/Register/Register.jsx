@@ -15,48 +15,21 @@ const Register = (props) => {
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        const user = {name: name, email: email}
+        const user = { name: name, email: email };
         createUser(email, password).then((res) => {
             updateUserProfile(name).then(async (res) => {
-                const result = await fetch("http://localhost:5000/users", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        user
-                    }),
-                });
-                if (result.status === 201) {
-                    Swal.fire({
-                        position: "center",
-                        icon: "success",
-                        title: "Registration successfully done",
-                        showConfirmButton: false,
-                        timer: 1500,
-                    });
-                  navigate("/");  
-                  form.reset();
-                } 
-            });
-        });
-    };
-    const handlegoogleRegister = () => {
-        signInWithGoogle().then(async (res) => {
-            const user = {
-                name: res.user.displayName,
-                email: res.user.email,
-            }
-            console.log(res.user)
-                const result = await fetch("http://localhost:5000/users", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        user
-                    }),
-                });
+                const result = await fetch(
+                    "https://job-task-server-brown.vercel.app/users",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            user,
+                        }),
+                    }
+                );
                 if (result.status === 201) {
                     Swal.fire({
                         position: "center",
@@ -66,9 +39,41 @@ const Register = (props) => {
                         timer: 1500,
                     });
                     navigate("/");
-            } 
-                else if (result.status === 409) {
-                    navigate('/')
+                    form.reset();
+                }
+            });
+        });
+    };
+    const handlegoogleRegister = () => {
+        signInWithGoogle().then(async (res) => {
+            const user = {
+                name: res.user.displayName,
+                email: res.user.email,
+            };
+            // console.log(res.user)
+            const result = await fetch(
+                "https://job-task-server-brown.vercel.app/users",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        user,
+                    }),
+                }
+            );
+            if (result.status === 201) {
+                Swal.fire({
+                    position: "center",
+                    icon: "success",
+                    title: "Registration successfully done",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
+                navigate("/");
+            } else if (result.status === 409) {
+                navigate("/");
             }
         });
     };
@@ -82,9 +87,9 @@ const Register = (props) => {
                 backgroundSize: "cover",
                 backgroundPosition: "center",
             }}
-            className={`w-full flex justify-center items-center h-screen`}
+            className={`w-full flex justify-center items-center min-h-screen`}
         >
-            <div className="w-full max-w-md p-8 space-y-3 rounded-xl bg-background bg-clip-padding backdrop-filter backdrop-blur bg-opacity-50 backdrop-saturate-100 backdrop-contrast-100">
+            <div className="w-[80%] lg:max-w-md  p-4 lg:p-8 my-5 space-y-3 rounded-xl bg-background bg-clip-padding backdrop-filter backdrop-blur bg-opacity-50 backdrop-saturate-100 backdrop-contrast-100">
                 <h1 className="text-4xl font-bold text-center text-primary">
                     Register
                 </h1>

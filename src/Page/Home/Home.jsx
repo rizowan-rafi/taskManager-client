@@ -30,6 +30,8 @@ import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useTasks from "../../hooks/useTasks";
+import { PiHandWavingBold } from "react-icons/pi";
+import { GoSignOut } from "react-icons/go";
 
 const columns = [
     {
@@ -90,6 +92,14 @@ const Home = (props) => {
     const navigate = useNavigate();
     const handleSignOut = () => {
         signOutUser().then((res) => {
+            Swal.fire({
+                position: 'center',
+                title: "Logged Out",
+                text: "You have successfully logged out.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+            })
             navigate("/login");
         });
     };
@@ -102,7 +112,7 @@ const Home = (props) => {
 
     // useEffect(() => {
     //     if (user?.email) {
-    //         fetch(`http://localhost:5000/tasks/${user.email}`)
+    //         fetch(`https://job-task-server-brown.vercel.app/tasks/${user.email}`)
     //             .then((response) => response.json())
     //             .then((data) => setTasks(data))
     //             .catch((error) => console.error("Error:", error));
@@ -124,26 +134,29 @@ const Home = (props) => {
             status: "TODO",
         };
         // console.log(task)
-        const result = await fetch("http://localhost:5000/tasks", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(task),
-        });
+        const result = await fetch(
+            "https://job-task-server-brown.vercel.app/tasks",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(task),
+            }
+        );
         if (result.status === 201) {
             // const newTasks = [...tasks, task];
             // setTasks(newTasks);
             refetch();
             Swal.fire({
-                position: "top-end",
+                position: "center",
                 icon: "success",
                 title: "new task added successfully",
                 showConfirmButton: false,
                 timer: 1500,
             });
+            e.target.reset();
             document.getElementById("my_modal_1").close();
-            
         }
     };
 
@@ -162,23 +175,26 @@ const Home = (props) => {
         );
 
         try {
-            const result = await fetch(`http://localhost:5000/tasks/${taskId}`, {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ status: newStatus }),
-            });
+            const result = await fetch(
+                `https://job-task-server-brown.vercel.app/tasks/${taskId}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ status: newStatus }),
+                }
+            );
 
             if (result.status === 200) {
                 refetch();
                 Swal.fire({
-                    position: "top-end",
+                    position: "center",
                     icon: "success",
                     title: `Task status updated to ${newStatus}`,
                     showConfirmButton: false,
                     timer: 1500,
-                })
+                });
             }
         } catch (error) {
             console.error("Error updating task status:", error);
@@ -191,7 +207,12 @@ const Home = (props) => {
                 distance: 5,
             },
         }),
-        useSensor(TouchSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                
+                distance:5,
+            },
+        }),
         useSensor(MouseSensor)
     );
     if (loading || isPending) {
@@ -201,14 +222,27 @@ const Home = (props) => {
     return (
         <div className="p-4">
             <div>
-                <button onClick={handleSignOut} className="btn">
-                    SignOut
+                <button
+                    onClick={handleSignOut}
+                    className="btn text-xl hover:bg-primary hover:text-background text-primary bg-background"
+                >
+                    <span>
+                        <GoSignOut></GoSignOut>
+                    </span>
+                    <span>SignOut</span>
                 </button>
             </div>
-            <button>{user?.email}</button>
+            <div className="flex justify-center items-center text-5xl text-center">
+                <h2 className="flex items-center space-x-3 text-center text-primary my-5">
+                    <span>
+                        <PiHandWavingBold></PiHandWavingBold>{" "}
+                    </span>{" "}
+                    <span>Hello {user.displayName}</span>
+                </h2>
+            </div>
             <div></div>
-            <div className="flex gap-8">
-                <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+            <div className="flex gap-8 flex-col lg:flex-row">
+                <DndContext sensors={sensors} onDragEnd={handleDragEnd} >
                     {columns.map((column) => {
                         return (
                             <Column
@@ -223,26 +257,31 @@ const Home = (props) => {
                 </DndContext>
             </div>
             <div>
-                <button
-                    onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
-                    }
-                    className="btn"
-                >
-                    Add Task
-                </button>
+                <div className="text-center mt-6 ">
+                    <button
+                        onClick={() =>
+                            document.getElementById("my_modal_1").showModal()
+                        }
+                        className="btn text-center bg-primary w-full text-background font-bold hover:bg-accent"
+                    >
+                        Add Task
+                    </button>
+                </div>
 
                 <dialog id="my_modal_1" className="modal">
                     <div className="modal-box">
-                        <h3 className="font-bold text-lg">Hello!</h3>
-                        <p className="py-4">
-                            Press ESC key or click the button below to close
+                        <h3 className="font-bold text-xl text-accent">ADD Task</h3>
+                        <p className="py-4 text-accent">
+                            Fill in the details below to create a new task.
                         </p>
                         <div className="modal-action flex-col">
-                            <form onSubmit={handleTask} className="w-full">
+                            <form
+                                onSubmit={handleTask}
+                                className="w-full text-text"
+                            >
                                 <div className="form-control w-full">
                                     <label className="label">
-                                        <span className="label-text">
+                                        <span className="label-text text-accent font-semibold">
                                             Task Title
                                         </span>
                                     </label>
@@ -256,7 +295,7 @@ const Home = (props) => {
                                 </div>
                                 <div className="form-control mt-5">
                                     <label className="label">
-                                        <span className="label-text">
+                                        <span className="label-text text-accent font-semibold">
                                             Task Description
                                         </span>
                                     </label>
@@ -270,12 +309,12 @@ const Home = (props) => {
                                 <input
                                     type="submit"
                                     value="Add Task"
-                                    className="btn w-full mt-5"
+                                    className="btn w-full mt-5 bg-primary hover:bg-accent text-background"
                                 />
                             </form>
 
                             <button
-                                className="btn  mt-5"
+                                className="btn  mt-5 bg-primary hover:bg-accent text-background"
                                 onClick={() =>
                                     document
                                         .getElementById("my_modal_1")

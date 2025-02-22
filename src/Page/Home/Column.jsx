@@ -11,8 +11,8 @@ const Column = ({column,task}) => {
     // console.log(task,column)
   return (
     
-      <div className="flex w-80 flex-col rounded-lg bg-neutral-800 p-4">
-          <h2 className="mb-4 font-semibold text-neutral-100">
+      <div className="flex w-80 min-h-80 flex-col rounded-lg bg-primary text-background p-4">
+          <h2 className="mb-4 text-xl text-background font-bold">
               {column.title}
           </h2>
           <SortableContext

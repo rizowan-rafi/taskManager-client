@@ -6,7 +6,7 @@ const useTasks = (email) => {
         queryFn: async () => {
             if (!email) return [];
             const response = await fetch(
-                `http://localhost:5000/tasks/${email}`
+                `https://job-task-server-brown.vercel.app/tasks/${email}`
             );
             if (!response.ok) {
                 throw new Error("Failed to fetch tasks");

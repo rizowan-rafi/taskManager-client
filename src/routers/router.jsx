@@ -5,18 +5,25 @@ import MainLayout from '../Layouts/MainLayout';
 import Login from '../Page/Login/Login';
 import Register from '../Page/Register/Register';
 import Home from '../Page/Home/Home';
+import PrivateRoute from './PrivateRoute';
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout></MainLayout>,
         children: [
-            { path: "/", element: <Home></Home> },
+            {
+                path: "/",
+                element: (
+                    <PrivateRoute>
+                        <Home></Home>
+                    </PrivateRoute>
+                ),
+            },
             { path: "/login", element: <Login></Login> },
             { path: "/register", element: <Register></Register> },
         ],
     },
-    
 ]);
 
 router.propTypes = {}
